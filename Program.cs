@@ -1,9 +1,8 @@
 
-using Microsoft.AspNetCore;
-using Microsoft.Extensions.Logging;
-using Serilog;
+using FortisService.DataContext;
+using Microsoft.EntityFrameworkCore;
 
-namespace FortisPkeCard.WebService
+namespace FortisPokerCard.WebService
 {
     public class Program
     {
@@ -28,6 +27,20 @@ namespace FortisPkeCard.WebService
                 configuration.ReadFrom.Configuration(context.Configuration);
                 configuration.Enrich.FromLogContext();
                 });*/
+
+            //DB config
+            string databaseType = builder.Configuration.GetValue<string>("DatabaseType");
+            _ = builder.Services.AddDbContext<FortisDbContext>(options =>
+            {
+                if (databaseType.ToLower() == "SQLite")
+                {
+                    options.UseSqlite();
+                }
+                else
+                {
+                    // todo
+                }
+            });
 
             var app = builder.Build();
 

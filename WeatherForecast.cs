@@ -1,4 +1,4 @@
-namespace FortisPkeCard.WebService
+namespace FortisPokerCard.WebService
 {
     public class WeatherForecast
     {

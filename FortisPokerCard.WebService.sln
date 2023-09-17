@@ -3,9 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FortisPokerCard.WebService", "FortisPokerCard.WebService.csproj", "{00B545FA-F22D-4421-AE66-E83F7FE57FB2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FortisPokerCard.WebService", "FortisPokerCard.WebService.csproj", "{00B545FA-F22D-4421-AE66-E83F7FE57FB2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{F3725955-722F-4EF5-BE66-7003865F9711}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FortisService.Core", "Libs\FortisService.Core\FortisService.Core.csproj", "{B3E1B795-035F-4D2F-9705-0E57441F0479}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FortisService.DataContext", "Libs\FortisService.DataContext\FortisService.DataContext.csproj", "{7A455D1A-A3E2-4AB3-AD48-DE252FA5655E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FortisService.Models", "Libs\FortisService.Models\FortisService.Models.csproj", "{5A597FDE-2C40-408C-9E5C-28B80829A1DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,9 +23,26 @@ Global
 		{00B545FA-F22D-4421-AE66-E83F7FE57FB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00B545FA-F22D-4421-AE66-E83F7FE57FB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00B545FA-F22D-4421-AE66-E83F7FE57FB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3E1B795-035F-4D2F-9705-0E57441F0479}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3E1B795-035F-4D2F-9705-0E57441F0479}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3E1B795-035F-4D2F-9705-0E57441F0479}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3E1B795-035F-4D2F-9705-0E57441F0479}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A455D1A-A3E2-4AB3-AD48-DE252FA5655E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A455D1A-A3E2-4AB3-AD48-DE252FA5655E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A455D1A-A3E2-4AB3-AD48-DE252FA5655E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A455D1A-A3E2-4AB3-AD48-DE252FA5655E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A597FDE-2C40-408C-9E5C-28B80829A1DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A597FDE-2C40-408C-9E5C-28B80829A1DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A597FDE-2C40-408C-9E5C-28B80829A1DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A597FDE-2C40-408C-9E5C-28B80829A1DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B3E1B795-035F-4D2F-9705-0E57441F0479} = {F3725955-722F-4EF5-BE66-7003865F9711}
+		{7A455D1A-A3E2-4AB3-AD48-DE252FA5655E} = {F3725955-722F-4EF5-BE66-7003865F9711}
+		{5A597FDE-2C40-408C-9E5C-28B80829A1DF} = {F3725955-722F-4EF5-BE66-7003865F9711}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AE3EDAB0-4354-4D8B-8B70-0471A8414FCB}
