@@ -1,7 +1,9 @@
 ﻿using FortisService.Core.Abstractions;
 using FortisService.Core.Models.Tables;
 using FortisService.DataContext.EntityConfigurations;
+using FortisService.Models.Models.Tables;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,18 +14,21 @@ namespace FortisService.DataContext
     // This DB context intentionally keeps things simple for clarity
     public class FortisDbContext : DbContext
     {
+        protected readonly IConfiguration Configuration;
 
-        public FortisDbContext(DbContextOptions<FortisDbContext> options)
+        public FortisDbContext(DbContextOptions<FortisDbContext> options, IConfiguration configuration)
             : base(options)
         {
-            var folder = Environment.SpecialFolder.LocalApplicationData;
-            var path = Environment.GetFolderPath(folder);
-            DbPath = System.IO.Path.Join(path, "poker.db");
+            Configuration = configuration;
         }
 
-        public string DbPath { get; }
-
         public DbSet<Game> Games { get; set; }
+
+        public DbSet<Card> Cards { get; set; }
+
+        public DbSet<Player> Players { get; set; }
+
+        public DbSet<StatusHistory> StatusHistories { get; set; }
 
         private void OnBeforeSaving()
         {
@@ -66,10 +71,13 @@ namespace FortisService.DataContext
             //modelBuilder.UsePropertyAccessMode(PropertyAccessMode.PreferFieldDuringConstruction);
 
             modelBuilder.ApplyConfiguration(new GameEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new CardEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new PlayerEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new StatusHistoryEntityConfiguration());
 
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-        => options.UseSqlite($"Data Source={DbPath}");
+        => options.UseSqlite(Configuration.GetConnectionString("database"));
     }
 }

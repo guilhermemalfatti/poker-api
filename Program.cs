@@ -1,4 +1,5 @@
 
+using FluentValidation.AspNetCore;
 using FortisService.DataContext;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Data.Entity;
+using System.Reflection;
 
 namespace FortisPokerCard.WebService
 {
@@ -21,10 +23,21 @@ namespace FortisPokerCard.WebService
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddFluentValidation(options =>
+            {
+                // Validate child properties and root collection elements
+                options.ImplicitlyValidateChildProperties = true;
+                options.ImplicitlyValidateRootCollectionElements = true;
+
+                // Automatic registration of validators in assembly
+                options.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            }); ;
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            
 
             //builder.Logging.ClearProviders();
             builder.Configuration.AddEnvironmentVariables("FORTIS_");
@@ -47,8 +60,6 @@ namespace FortisPokerCard.WebService
                 }
             });
 
-            /*var databaseContext = builder.Services.GetRequiredService<FortisDbContext>();
-            databaseContext.Database.EnsureCreated();*/
 
             var app = builder.Build();
 
@@ -67,7 +78,6 @@ namespace FortisPokerCard.WebService
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
