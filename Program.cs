@@ -1,6 +1,11 @@
 
 using FortisService.DataContext;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using System.Data.Entity;
 
 namespace FortisPokerCard.WebService
 {
@@ -42,7 +47,15 @@ namespace FortisPokerCard.WebService
                 }
             });
 
+            /*var databaseContext = builder.Services.GetRequiredService<FortisDbContext>();
+            databaseContext.Database.EnsureCreated();*/
+
             var app = builder.Build();
+
+            // ensure DB is created, don't use this with EF migrations
+            using var scope = app.Services.CreateScope();
+            using var context = scope.ServiceProvider.GetService<FortisDbContext>();
+                context.Database.EnsureCreated();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

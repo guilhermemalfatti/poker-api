@@ -2,6 +2,9 @@
 using FortisService.Core.Models.Tables;
 using FortisService.DataContext.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace FortisService.DataContext
 {
@@ -9,7 +12,9 @@ namespace FortisService.DataContext
     // This DB context intentionally keeps things simple for clarity
     public class FortisDbContext : DbContext
     {
-        public FortisDbContext()
+
+        public FortisDbContext(DbContextOptions<FortisDbContext> options)
+            : base(options)
         {
             var folder = Environment.SpecialFolder.LocalApplicationData;
             var path = Environment.GetFolderPath(folder);

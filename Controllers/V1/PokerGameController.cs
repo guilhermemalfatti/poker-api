@@ -3,6 +3,10 @@ using FortisService.Core.Models.Tables;
 using FortisService.Core.Payload.V1;
 using FortisService.DataContext;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Data.Entity;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace FortisPokerCard.WebService.Controllers.V1
 {
@@ -21,27 +25,25 @@ namespace FortisPokerCard.WebService.Controllers.V1
         // todo create a class to represent game entry
         [HttpPost]
         public async Task<string> CreateGame(
-            [FromBody] int gameId,
-            [FromBody] string name)
+            [FromBody] Game game)
         {
-            var game = new Game
-            {
-                Id = gameId,
-                Name = "test"
-            };
-            await _databaseContext.CreateAsync(g => g.Id == gameId, game, HttpContext.RequestAborted);
+            await _databaseContext.CreateAsync(g => g.Id == game.Id, game, HttpContext.RequestAborted);
             return "foo";
         }
 
         [HttpGet("{id}")]
-        public String GetGame([FromRoute] RouteIdParameters routeParameters)
+        public async Task<ActionResult<Game>> GetGame([FromRoute] RouteIdParameters routeParameters)
         {
-            return "foo";
+            var game = await _databaseContext.Games
+                .Where(g => g.Id == routeParameters.Id)
+                .ToListAsync();
+
+            return Ok(game.First());
         }
 
         // todo query path to identify the player
         [HttpGet("{id}/playerHand")]
-        public String GetPlayerHand(
+        public string GetPlayerHand(
             [FromRoute] RouteIdParameters routeParameters)
         {
             return $"foo {routeParameters.Id}";
@@ -49,7 +51,7 @@ namespace FortisPokerCard.WebService.Controllers.V1
 
         // if all player have requested the cards see who won
         [HttpGet("result")]
-        public String GetResult()
+        public string GetResult()
         {
             return "foo";
         }

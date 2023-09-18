@@ -1,3 +1,5 @@
+using System;
+
 namespace FortisPokerCard.WebService
 {
     public class WeatherForecast

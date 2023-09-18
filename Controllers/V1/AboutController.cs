@@ -8,7 +8,7 @@ namespace FortisPokerCard.WebService.Controllers.V1
     public class AboutController : ControllerBase
     {
         [HttpGet]
-        public String Get()
+        public string Get()
         {
             return "foo";
         }
