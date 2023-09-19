@@ -7,9 +7,6 @@ using FortisService.DataContext;
 using FortisService.Models.Models.Tables;
 using FortisService.Models.Payloads;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Data.Entity;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace FortisPokerCard.WebService.Controllers.V1

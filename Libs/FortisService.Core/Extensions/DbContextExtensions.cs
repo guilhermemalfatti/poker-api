@@ -55,5 +55,36 @@ namespace FortisService.Core.Extensions
                 throw;
             }
         }
+        public static async Task<TEntity> GetOrAddAsync<TEntity>(
+            this DbContext databaseContext,
+            Expression<Func<TEntity, bool>> predicate,
+            TEntity entityToAdd,
+            CancellationToken cancellationToken = default)
+            where TEntity : class
+        {
+
+            var entity = await databaseContext.Set<TEntity>().Where(predicate).FirstOrDefaultAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+            if (entity == null)
+            {
+                Exception exception = null;
+
+                try
+                {
+                    await databaseContext.Set<TEntity>().AddAsync(entityToAdd, cancellationToken).ConfigureAwait(false);
+                    await databaseContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
+                entity = await databaseContext.Set<TEntity>().Where(predicate).FirstOrDefaultAsync(cancellationToken)
+                    .ConfigureAwait(false);
+            }
+
+            return entity;
+        }
     }
 }

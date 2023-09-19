@@ -1,5 +1,6 @@
 
 using FluentValidation.AspNetCore;
+using FortisService.Core.Services;
 using FortisService.DataContext;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -37,7 +38,10 @@ namespace FortisPokerCard.WebService
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            
+            // Add scoped services
+            // todo create an extension methos to cleanup the startup
+            builder.Services.AddScoped<GameService>();
+                       
 
             //builder.Logging.ClearProviders();
             builder.Configuration.AddEnvironmentVariables("FORTIS_");

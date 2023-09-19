@@ -6,6 +6,7 @@ using FortisService.Models.Enumerator;
 using System.Collections;
 using System.Collections.Generic;
 using FortisService.Core.Models.Tables;
+using System.Text.Json.Serialization;
 
 namespace FortisService.Models.Models.Tables
 {
@@ -24,8 +25,10 @@ namespace FortisService.Models.Models.Tables
 
         public int GameId { get; set; }
 
+        [JsonIgnore]
         public Player Player { get; set; }
 
+        [JsonIgnore]
         public Game Game { get; set; }
 
         /*public IList<Card> Hand { get; set; } // todo check how it will be mapped in the DB*/

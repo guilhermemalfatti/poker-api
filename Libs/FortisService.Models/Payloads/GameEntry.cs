@@ -11,5 +11,7 @@ namespace FortisService.Models.Payloads
         public int Id { get; set; }
 
         public string Key { get; set; }
+
+        public IList<int> PlayerIds { get; set; }
     }
 }

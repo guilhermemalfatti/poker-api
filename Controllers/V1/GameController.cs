@@ -1,39 +1,57 @@
-﻿using FortisService.Core.Extensions;
+﻿using FortisService.Core.Exceptions;
+using FortisService.Core.Extensions;
+using FortisService.Core.Models.Messages;
 using FortisService.Core.Models.Tables;
 using FortisService.Core.Payload.V1;
+using FortisService.Core.Services;
 using FortisService.DataContext;
+using FortisService.Models.Models.Tables;
 using FortisService.Models.Payloads;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Data.Entity;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace FortisPokerCard.WebService.Controllers.V1
 {
     [Route("api/V1/[controller]")]
     [ApiController]
-    public class PokerGameController : Controller
+    public class GameController : Controller
     {
         private readonly FortisDbContext _databaseContext;
+        private readonly GameService _gameService;
 
-        public PokerGameController(
-            FortisDbContext databaseContext)
+        public GameController(
+            FortisDbContext databaseContext,
+             GameService gameService)
         {
             _databaseContext = databaseContext;
+            _gameService = gameService;
         }
 
-        // todo create a class to represent game entry
         [HttpPost]
-        public async Task<string> CreateGame(
+        [ProducesResponseType(typeof(CreatedResponseMessage<Game>), 200)]
+        [ProducesResponseType(typeof(ErrorResponseMessage<Player>), 409)]
+        public async Task<ActionResult<ObjectResponseMessage<Game>>> CreateGame(
             [FromBody] GameEntry gameEntry)
         {
+
+            try
+            {
+                foreach (var playerId in gameEntry.PlayerIds)
+                {
+                    await _databaseContext.GetOrThrowAsync<Player>(p => p.Id == playerId, HttpContext.RequestAborted);
+                }
+            }
+            catch (NotFoundFortisException ex)
+            {
+                return NotFound(ex.Message);
+            }
+
             var game = new Game
             {
                 Key = gameEntry.Key,
             };
-            await _databaseContext.CreateAsync(g => g.Id == game.Id, game, HttpContext.RequestAborted);
-            return "foo";
+
+            return Ok(await _gameService.CreateGameStatusAsync(gameEntry, game, HttpContext.RequestAborted).ConfigureAwait(false));
         }
 
         [HttpGet("{id}")]

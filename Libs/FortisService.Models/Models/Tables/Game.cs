@@ -16,6 +16,7 @@ namespace FortisService.Core.Models.Tables
 
         public string Key { get; set; }
 
+        [JsonIgnore]
         public List<StatusHistory> StatusHistories { get; set; }
 
         public DateTime CreatedAt { get; set; }

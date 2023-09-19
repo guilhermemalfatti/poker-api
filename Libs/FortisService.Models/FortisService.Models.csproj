@@ -4,15 +4,6 @@
     <TargetFramework>net7.0</TargetFramework>
 
 	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-	  <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
-	  <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
-	  <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
-	  <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-	  <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-	  <GenerateAssemblyInformationAttribute>false</GenerateAssemblyInformationAttribute>
-	  <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
-	  <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-	  <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
   </PropertyGroup>
 
 </Project>

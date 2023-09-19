@@ -8,6 +8,7 @@ namespace FortisPokerCard.WebService.Validators
         public GameEntryValidator()
         {
             RuleFor(entry => entry.Key).NotEmpty();
+            RuleFor(entry => entry.PlayerIds).NotEmpty();
         }
     }
 }
