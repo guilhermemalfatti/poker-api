@@ -14,21 +14,36 @@ namespace FortisService.Models.Payloads
         [JsonIgnore]
         public Player Player { get; set; }
 
-        private string PlayerName { get => Player.Name; }
+        /// <summary>
+        /// Rank by the highest hand card type
+        /// </summary>
+        /// [JsonIgnore]
+        public Rank HandTypeRank { get; set; }
+
+        public string PlayerName { get => Player.Name; }
 
         public bool IsWinner { get; set; } = false;
 
+        [JsonIgnore]
         public PokerHandType? HandType { get; set; }
+
+        public string? HandTypeName { get => HandType?.ToString();  }
 
         [JsonIgnore]
         public IList<Card> CardList { get; set; }
 
+        /// <summary>
+        /// List represents only the cards used to verify the high card hand
+        /// </summary>
         [JsonIgnore]
         public IList<Card> HighCardList { get; set; }
 
-        public Card? HighCard { get => HighCardList?.OrderBy(c => c.Rank).FirstOrDefault(); }
+        [JsonIgnore]
+        public Card? HighCard { get => HighCardList?.OrderByDescending(c => c.Rank).FirstOrDefault(); }
 
-        public IList<string> Cards { get => CardList.Select(c => c.ToString()).ToList(); }
+        public string HightCardName { get => HighCard?.ToString(); }
+
+        public IList<string> CardsName { get => CardList.Select(c => c.ToString()).ToList(); }
 
         public PlayerHandResponse(Player player, IList<Card> cards)
         {

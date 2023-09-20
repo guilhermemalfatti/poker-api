@@ -14,7 +14,7 @@ namespace FortisService.Models.Payloads
 
         public GameResultResponse(IList<PlayerHandResponse> players)
         {
-            Players = Players;
+            Players = players;
         }
     }
 }
