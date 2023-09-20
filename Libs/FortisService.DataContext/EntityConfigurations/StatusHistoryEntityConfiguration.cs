@@ -26,6 +26,26 @@ namespace FortisService.DataContext.EntityConfigurations
             builder.HasOne(sh => sh.Player)
                 .WithMany(g => g.StatusHistories)
                 .HasForeignKey(u => u.PlayerId);
+
+            builder.HasOne(sh => sh.FirstCard)
+                .WithMany(c => c.FirstCards)
+                .HasForeignKey(sh => sh.FirstCardId);
+
+            builder.HasOne(sh => sh.SecondCard)
+                .WithMany(c => c.SecondCards)
+                .HasForeignKey(sh => sh.SecondCardId);
+
+            builder.HasOne(sh => sh.ThirdCard)
+                .WithMany(c => c.ThirdCards)
+                .HasForeignKey(sh => sh.ThirdCardId);
+
+            builder.HasOne(sh => sh.FourthCard)
+                .WithMany(c => c.FourthCards)
+                .HasForeignKey(sh => sh.FourthCardId);
+
+            builder.HasOne(sh => sh.FifthCard)
+                .WithMany(c => c.FifthCards)
+                .HasForeignKey(sh => sh.FifthCardId);
         }
     }
 }

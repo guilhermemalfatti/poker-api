@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace FortisService.Models.Models.Tables
@@ -21,5 +22,25 @@ namespace FortisService.Models.Models.Tables
 
         [Required]
         public Suit Suit { get; set; }
+
+        [JsonIgnore]
+        public IList<StatusHistory> FirstCards { get; set; }
+
+        [JsonIgnore]
+        public IList<StatusHistory> SecondCards { get; set; }
+
+        [JsonIgnore]
+        public IList<StatusHistory> ThirdCards { get; set; }
+
+        [JsonIgnore]
+        public IList<StatusHistory> FourthCards { get; set; }
+
+        [JsonIgnore]
+        public IList<StatusHistory> FifthCards { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Rank} of {Suit}";
+        }
     }
 }

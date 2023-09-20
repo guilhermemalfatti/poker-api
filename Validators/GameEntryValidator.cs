@@ -9,6 +9,7 @@ namespace FortisPokerCard.WebService.Validators
         {
             RuleFor(entry => entry.Key).NotEmpty();
             RuleFor(entry => entry.PlayerIds).NotEmpty();
+            RuleFor(entry => entry.PlayerIds.Count).GreaterThan(1);
         }
     }
 }

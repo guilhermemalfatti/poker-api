@@ -17,7 +17,7 @@ namespace FortisService.DataContext.EntityConfigurations
                 .HasIndex(b => b.Id)
                 .IsUnique();
 
-            builder.HasKey(c => new { c.Id, c.Rank, c.Suit });
+            builder.HasKey(b => b.Id);
 
             // initial seed data
             builder.HasData(

@@ -68,8 +68,6 @@ namespace FortisService.Core.Extensions
 
             if (entity == null)
             {
-                Exception exception = null;
-
                 try
                 {
                     await databaseContext.Set<TEntity>().AddAsync(entityToAdd, cancellationToken).ConfigureAwait(false);

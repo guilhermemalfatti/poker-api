@@ -37,8 +37,8 @@ namespace FortisPokerCard.WebService.Controllers.V1
 
             try
             {
-                var test = await _databaseContext.CreateAsync(g => g.Name == playerEntry.Name, player, HttpContext.RequestAborted);
-                return test;
+                var playerEntity = await _databaseContext.CreateAsync(g => g.Name == playerEntry.Name, player, HttpContext.RequestAborted);
+                return playerEntity;
             }
             catch (ConflictFortisException ex)
             {

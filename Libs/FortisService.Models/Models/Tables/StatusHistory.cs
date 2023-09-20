@@ -21,6 +21,16 @@ namespace FortisService.Models.Models.Tables
 
         public bool Winner { get; set; }
 
+        public int? FirstCardId { get; set; }
+
+        public int? SecondCardId { get; set; }
+
+        public int? ThirdCardId { get; set; }
+
+        public int? FourthCardId { get; set; }
+
+        public int? FifthCardId { get; set; }
+
         public int PlayerId { get; set; }
 
         public int GameId { get; set; }
@@ -30,6 +40,21 @@ namespace FortisService.Models.Models.Tables
 
         [JsonIgnore]
         public Game Game { get; set; }
+
+        [JsonIgnore]
+        public Card FirstCard { get; set; }
+
+        [JsonIgnore]
+        public Card SecondCard { get; set; }
+
+        [JsonIgnore]
+        public Card ThirdCard { get; set; }
+
+        [JsonIgnore]
+        public Card FourthCard { get; set; }
+
+        [JsonIgnore]
+        public Card FifthCard { get; set; }
 
         /*public IList<Card> Hand { get; set; } // todo check how it will be mapped in the DB*/
 

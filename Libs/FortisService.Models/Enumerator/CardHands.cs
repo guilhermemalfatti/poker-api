@@ -6,6 +6,21 @@ using System.Threading.Tasks;
 
 namespace FortisService.Models.Enumerator
 {
+
+    public enum PokerHandType
+    {
+        HighCard,
+        Pair,
+        TwoPair,
+        ThreeOfKind,
+        Straight,
+        Flush,
+        FullHouse,
+        FourOfKind,
+        StraightFlush,
+        RoyalFlush
+    }
+
     public enum Rank {
         Two, 
         Three,
