@@ -23,7 +23,6 @@ namespace FortisPokerCard.WebService.Controllers.V1
             _databaseContext = databaseContext;
         }
 
-        // todo create a class to represent game entry
         [HttpPost]
         [ProducesResponseType(typeof(CreatedResponseMessage<Player>), 200)]
         [ProducesResponseType(typeof(ErrorResponseMessage<Player>), 409)]
@@ -47,7 +46,7 @@ namespace FortisPokerCard.WebService.Controllers.V1
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Game>> Get([FromRoute] RouteIdParameters routeParameters)
+        public async Task<ActionResult<Player>> Get([FromRoute] RouteIdParameters routeParameters)
         {
             try
             {

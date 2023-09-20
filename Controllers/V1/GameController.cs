@@ -55,6 +55,20 @@ namespace FortisPokerCard.WebService.Controllers.V1
             {
                 return Conflict($"The Game with key {gameEntry.Key} already exist.");
             }
+
+            var latestGameStatus = _databaseContext.StatusHistories
+                .GroupBy(sh => new
+                {
+                    sh.GameId,
+                    sh.PlayerId
+                })
+                .Select(g => g.ToList().OrderByDescending(sh => sh.CreatedAt).First()).ToList();
+
+            if (latestGameStatus.Any(sh => gameEntry.PlayerIds.Contains(sh.PlayerId) && (sh.Status == Status.InProgress || sh.Status == Status.New)))
+            {
+                return Conflict($"A player is already in another game, can't start a new one.");
+            }
+
             ObjectResponseMessage<Game> gameResponse;
             try
             {
@@ -120,29 +134,6 @@ namespace FortisPokerCard.WebService.Controllers.V1
             return Ok(hands);
         }
 
-        // todo
-        [HttpGet("{id}/Hands")]
-        [ProducesResponseType(typeof(CreatedResponseMessage<Game>), 200)]
-        [ProducesResponseType(typeof(ErrorResponseMessage<Game>), 400)]
-        [ProducesResponseType(typeof(ErrorResponseMessage<Game>), 404)]
-        public async Task<ActionResult<IList<PlayerHandResponse>>> GetPlayerHand(
-            [FromRoute] RouteIdParameters routeParameters)
-        {
-            try
-            {
-                await _databaseContext.GetOrThrowAsync<Game>(g => g.Id == routeParameters.Id, HttpContext.RequestAborted);
-            }
-            catch (NotFoundFortisException ex)
-            {
-                return NotFound(ex.Message);
-            }
-
-            var hands = await _gameService.GetPlayerHandsByGameIdAsync(routeParameters.Id, HttpContext.RequestAborted);
-
-            return Ok(hands);
-        }
-
-        // if all player have requested the cards see who won
         [HttpGet("{id}/Result")]
         [ProducesResponseType(typeof(CreatedResponseMessage<GameResultResponse>), 200)]
         [ProducesResponseType(typeof(ErrorResponseMessage<GameResultResponse>), 400)]
@@ -159,11 +150,12 @@ namespace FortisPokerCard.WebService.Controllers.V1
                 return NotFound(ex.Message);
             }
 
-            var isGameDone = _databaseContext.StatusHistories.Any(sh => sh.Status == Status.Done && sh.GameId == routeParameters.Id);
+            // todo remove comment
+            /*var isGameDone = _databaseContext.StatusHistories.Any(sh => sh.Status == Status.Done && sh.GameId == routeParameters.Id);
             if (isGameDone)
             {
                 return Ok(await _gameService.GetResultAsync(routeParameters.Id, HttpContext.RequestAborted));
-            }
+            }*/
 
             var playerstResponse = await _gameService.DetermineAndGetResultAsync(routeParameters.Id, HttpContext.RequestAborted);
 

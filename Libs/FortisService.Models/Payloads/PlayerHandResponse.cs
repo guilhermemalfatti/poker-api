@@ -1,11 +1,8 @@
 ﻿using FortisService.Models.Enumerator;
 using FortisService.Models.Models.Tables;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace FortisService.Models.Payloads
 {
@@ -27,6 +24,7 @@ namespace FortisService.Models.Payloads
         [JsonIgnore]
         public PokerHandType? HandType { get; set; }
 
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string? HandTypeName { get => HandType?.ToString();  }
 
         [JsonIgnore]
@@ -41,9 +39,17 @@ namespace FortisService.Models.Payloads
         [JsonIgnore]
         public Card? HighCard { get => HighCardList?.OrderByDescending(c => c.Rank).FirstOrDefault(); }
 
+        [JsonIgnore]
+        public Card? HighCardByHandType { get; set;  }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string HightCardName { get => HighCard?.ToString(); }
 
         public IList<string> CardsName { get => CardList.Select(c => c.ToString()).ToList(); }
+
+        public PlayerHandResponse()
+        {
+        }
 
         public PlayerHandResponse(Player player, IList<Card> cards)
         {

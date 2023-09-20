@@ -114,22 +114,6 @@ namespace FortisService.Core.Services
             return playerHandsResponse;
         }
 
-        public async Task<IList<PlayerHandResponse>> GetPlayerHandsByGameIdAsync(
-            int gameId,
-            CancellationToken cancellationToken = default)
-        {
-            var playerStatusHistoriesForCurrentGame = await getInProgressPlayerStatusHisotryAsync(gameId, cancellationToken).ConfigureAwait(false);
-
-            var playerHandsResponse = new List<PlayerHandResponse>();
-
-            foreach (var psh in playerStatusHistoriesForCurrentGame)
-            {
-                var playerCards = new List<Card> { psh.FirstCard, psh.SecondCard, psh.ThirdCard, psh.FourthCard, psh.FifthCard };
-                playerHandsResponse.Add(new PlayerHandResponse(psh.Player, playerCards));
-            }
-            return playerHandsResponse;
-        }
-
         private async Task<IList<StatusHistory>> getInProgressPlayerStatusHisotryAsync(
             int gameId,
             CancellationToken cancellationToken = default)
@@ -202,26 +186,54 @@ namespace FortisService.Core.Services
             IList<PlayerHandResponse>  playersHandResponse,
             CancellationToken cancellationToken = default)
         {
-            var groupCandidatesByHandType = candidateWinners.GroupBy(p => p.HandType);
+            var candidateWinner = new PlayerHandResponse();
 
-            // in this case we need to check the highest card
-            if (groupCandidatesByHandType.Count() == 1)
+            var groupCandidatesByHandTypeAndRank = candidateWinners.GroupBy(p => new 
             {
-                //todo
+                p.HandType,
+                p.GetGetHighestCardByHandType().Rank
+            });
+
+            // same handtype and same rank, in this case we need to check the highest card
+            if (groupCandidatesByHandTypeAndRank.Count() == 1)
+            {
+                foreach (var group in groupCandidatesByHandTypeAndRank)
+                {
+                    foreach (var player in group.ToList())
+                    {
+                        player.HighCardList = player.GetHighCardList();
+                    }
+                }
+
+                // todo check if 2 players have the same rank
+                var candidateWinnerPlayers = groupCandidatesByHandTypeAndRank.SelectMany(g => g).OrderByDescending(p => p.HighCard.Rank);
+                candidateWinner = candidateWinnerPlayers.First();
+                if (candidateWinnerPlayers.Where(c => c.HighCard.Rank == candidateWinner.HighCard.Rank).Count() > 1)
+                {
+                    return;//it's a tie                
+                }
+                candidateWinner.IsWinner = true;
+                return;
             }
 
-            // handle two+ players with the same hand type
-            foreach (var group in groupCandidatesByHandType)
+            // handle two+ players with the same hand type and different ranks
+            foreach (var group in groupCandidatesByHandTypeAndRank)
             {
                 foreach (var player in group.ToList())
                 {
-                    var highestPLayerCardByHandType = player.CardList.GroupBy(c => c.Rank).OrderByDescending(g => g.Key).First().First();
-                    player.HandTypeRank = highestPLayerCardByHandType.Rank;
+                    player.HighCardByHandType = player.GetGetHighestCardByHandType();
+                    //var highestPLayerCardByRank = player.CardList.GroupBy(c => c.Rank).OrderByDescending(g => g.Key).First().First();
+                    //player.HandTypeRank = highestPLayerCardByRank.Rank;
                 }
             }
 
-            var candidatePlayers = groupCandidatesByHandType.SelectMany(g => g).OrderByDescending(p => p.HandTypeRank);
-            candidatePlayers.First().IsWinner = true;            
+            var candidatePlayers = groupCandidatesByHandTypeAndRank.SelectMany(g => g).OrderByDescending(p => p.HighCardByHandType.Rank);
+            candidateWinner = candidatePlayers.First();
+            if (candidatePlayers.Where(c => c.HighCardByHandType.Rank == candidateWinner.HighCardByHandType.Rank).Count() > 1)
+            {
+                return;//it's a tie                
+            }
+            candidateWinner.IsWinner = true;            
         }
 
         private void winnerByHighHand(IList<PlayerHandResponse> playersHandResponse, CancellationToken cancellationToken = default)
