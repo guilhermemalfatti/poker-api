@@ -10,6 +10,7 @@ using FortisService.Models.Models.Tables;
 using FortisService.Models.Payloads;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -24,13 +25,16 @@ namespace FortisPokerCard.WebService.Controllers.V1
     {
         private readonly FortisDbContext _databaseContext;
         private readonly GameService _gameService;
+        private readonly ILogger<GameController> _logger;
 
         public GameController(
             FortisDbContext databaseContext,
-             GameService gameService)
+             GameService gameService,
+             ILogger<GameController> logger)
         {
             _databaseContext = databaseContext;
             _gameService = gameService;
+            _logger = logger;
         }
 
         [HttpPost]

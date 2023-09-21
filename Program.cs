@@ -1,12 +1,20 @@
 
+using FluentValidation;
 using FluentValidation.AspNetCore;
+using FortisPokerCard.WebService.Middleware;
+using FortisPokerCard.WebService.Validators;
+using FortisService.Core.Payload.V1;
 using FortisService.Core.Services;
 using FortisService.DataContext;
+using FortisService.Models.Payloads;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using Serilog;
+using System;
 using System.Data.Entity;
 using System.Reflection;
 
@@ -21,31 +29,24 @@ namespace FortisPokerCard.WebService
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Host.UseSerilog((context, logConfig) => logConfig
+                .ReadFrom.Configuration(context.Configuration));
+
+            builder.Services.AddFluentValidationAutoValidation();
+            builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
             // Add services to the container.
-
-            // todo replace deprecated method
-            builder.Services.AddControllers()
-                .AddFluentValidation(options =>
-                    {
-                        // Validate child properties and root collection elements
-                        options.ImplicitlyValidateChildProperties = true;
-                        options.ImplicitlyValidateRootCollectionElements = true;
-
-                        // Automatic registration of validators in assembly
-                        options.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-                    });
+            builder.Services.AddControllers();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+
             // Add scoped services
-            // todo create an extension methos to cleanup the startup
             builder.Services.AddScoped<GameService>();
                        
 
-            //builder.Logging.ClearProviders();
             builder.Configuration.AddEnvironmentVariables("FORTIS_");
             /*builder.Host.UseSerilog((context, configuration) => {
                 configuration.ReadFrom.Configuration(context.Configuration);
@@ -68,6 +69,7 @@ namespace FortisPokerCard.WebService
 
 
             var app = builder.Build();
+            app.UseMiddleware<RequestLoggerMiddleware>();
 
             // ensure DB is created, don't use this with EF migrations
             using var scope = app.Services.CreateScope();
