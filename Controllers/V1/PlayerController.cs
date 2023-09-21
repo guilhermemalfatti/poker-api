@@ -23,9 +23,25 @@ namespace FortisPokerCard.WebService.Controllers.V1
             _databaseContext = databaseContext;
         }
 
+        /// <summary>
+        /// Creates a new player.
+        /// </summary>
+        /// <returns>A newly created player.</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /api/V1/Player
+        ///     {
+        ///       "name": "foo"
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="200">Returns the newly created player.</response>
+        /// <response code="400">Request payload bad formatted.</response>
+        /// <response code="409">The player already exist.</response>
         [HttpPost]
         [ProducesResponseType(typeof(CreatedResponseMessage<Player>), 200)]
-        [ProducesResponseType(typeof(ErrorResponseMessage<Player>), 409)]
+        [ProducesResponseType(typeof(string), 409)]
         public async Task<ActionResult<ObjectResponseMessage<Player>>> Create(
             [FromBody] PlayerEntry playerEntry)
         {
@@ -45,7 +61,23 @@ namespace FortisPokerCard.WebService.Controllers.V1
             }
         }
 
+        /// <summary>
+        /// Fetch a player by Id.
+        /// </summary>
+        /// <returns>A the requested player.</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /api/V1/Player/{id}
+        ///
+        /// </remarks>
+        /// <response code="200">Returns the player.</response>
+        /// <response code="400">Request bad formatted.</response>
+        /// <response code="404">The player was not found.</response>
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(CreatedResponseMessage<Player>), 200)]
+        [ProducesResponseType(typeof(ErrorResponseMessage<Game>), 400)]
+        [ProducesResponseType(typeof(string), 404)]
         public async Task<ActionResult<Player>> Get([FromRoute] RouteIdParameters routeParameters)
         {
             try

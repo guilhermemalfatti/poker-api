@@ -13,9 +13,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using System;
 using System.Data.Entity;
+using System.IO;
 using System.Reflection;
 
 namespace FortisPokerCard.WebService
@@ -25,7 +27,6 @@ namespace FortisPokerCard.WebService
         /// <summary>
         /// Entry class of the web api
         /// </summary>
-        /// <param name="args"></param>
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -40,7 +41,19 @@ namespace FortisPokerCard.WebService
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "Poker API",
+                    Description = "An ASP.NET Core Web API to output five-card poker hands, and also evaluate which of the hands is the higher hand.",
+                });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                options.IncludeXmlComments(xmlPath);
+            });
 
 
             // Add scoped services
@@ -48,10 +61,6 @@ namespace FortisPokerCard.WebService
                        
 
             builder.Configuration.AddEnvironmentVariables("FORTIS_");
-            /*builder.Host.UseSerilog((context, configuration) => {
-                configuration.ReadFrom.Configuration(context.Configuration);
-                configuration.Enrich.FromLogContext();
-                });*/
 
             //DB config
             string databaseType = builder.Configuration.GetValue<string>("DatabaseType");
@@ -80,7 +89,10 @@ namespace FortisPokerCard.WebService
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Poker API(json)");
+                });
             }
 
             app.UseHttpsRedirection();

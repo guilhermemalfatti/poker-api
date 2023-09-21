@@ -8,6 +8,7 @@ using FortisService.DataContext;
 using FortisService.Models.Enumerator;
 using FortisService.Models.Models.Tables;
 using FortisService.Models.Payloads;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -37,11 +38,33 @@ namespace FortisPokerCard.WebService.Controllers.V1
             _logger = logger;
         }
 
+        /// <summary>
+        /// Creates a new poker game.
+        /// </summary>
+        /// <returns>A newly created game.</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /api/V1/Game
+        ///     {
+        ///       "Key": "A1",
+        ///        "PlayerIds": [
+        ///          1,
+        ///          2,
+        ///          3
+        ///        ]
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="200">Returns the newly created game.</response>
+        /// <response code="400">Request payload bad formatted.</response>
+        /// <response code="409">If the game already exist or a player is already in a inprogress game.</response>
+        /// <response code="404">If some players does not exist in the DB.</response>
         [HttpPost]
         [ProducesResponseType(typeof(CreatedResponseMessage<Game>), 200)]
-        [ProducesResponseType(typeof(CreatedResponseMessage<Game>), 201)]
-        [ProducesResponseType(typeof(ErrorResponseMessage<Player>), 409)]
-        [ProducesResponseType(typeof(ErrorResponseMessage<Player>), 404)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 409)]
         public async Task<ActionResult<ObjectResponseMessage<Game>>> CreateGame(
             [FromBody] GameEntry gameEntry)
         {
@@ -92,10 +115,22 @@ namespace FortisPokerCard.WebService.Controllers.V1
             return Ok(gameResponse);
         }
 
+        /// <summary>
+        /// Get a poker game.
+        /// </summary>
+        /// <returns>A the game by specified ID.</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/V1/Game
+        ///     
+        /// </remarks>
+        /// <response code="200">Returns the requested game.</response>
+        /// <response code="404">The requested game does not exist in the DB.</response>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(CreatedResponseMessage<Game>), 200)]
         [ProducesResponseType(typeof(ErrorResponseMessage<Game>), 400)]
-        [ProducesResponseType(typeof(ErrorResponseMessage<Game>), 404)]
+        [ProducesResponseType(typeof(string), 404)]
         public async Task<ActionResult<Game>> GetGame([FromRoute] RouteIdParameters routeParameters)
         {
             try
@@ -110,11 +145,25 @@ namespace FortisPokerCard.WebService.Controllers.V1
             }
         }
 
+        /// <summary>
+        /// Draw the cards for the players.
+        /// </summary>
+        /// <returns>Return the cards for each player in the game.</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /api/V1/Game/{id}/Hands
+        ///     
+        /// </remarks>
+        /// <response code="200">Return the cards for each player in the game.</response>
+        /// <response code="400">Bad request.</response>
+        /// <response code="404">The game does not exist.</response>
+        /// <response code="409">The is already in progress.</response>
         [HttpPut("{id}/Hands")]
         [ProducesResponseType(typeof(CreatedResponseMessage<Game>), 200)]
         [ProducesResponseType(typeof(ErrorResponseMessage<Game>), 400)]
-        [ProducesResponseType(typeof(ErrorResponseMessage<Game>), 404)]
-        [ProducesResponseType(typeof(ErrorResponseMessage<Game>), 409)]
+        [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 409)]
         public async Task<ActionResult<IList<PlayerHandResponse>>> CreateHands([FromRoute] RouteIdParameters routeParameters)
         {
             try
@@ -138,10 +187,23 @@ namespace FortisPokerCard.WebService.Controllers.V1
             return Ok(hands);
         }
 
+        /// <summary>
+        /// Get the game result.
+        /// </summary>
+        /// <returns>Return the cards of each player and the winner of the game.</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /api/V1/Game/{id}/Result
+        ///     
+        /// </remarks>
+        /// <response code="200">Return the cards of each player and the winner of the game.</response>
+        /// <response code="400">Bad request.</response>
+        /// <response code="404">The game does not exist.</response>
         [HttpGet("{id}/Result")]
         [ProducesResponseType(typeof(CreatedResponseMessage<GameResultResponse>), 200)]
         [ProducesResponseType(typeof(ErrorResponseMessage<GameResultResponse>), 400)]
-        [ProducesResponseType(typeof(ErrorResponseMessage<Game>), 404)]
+        [ProducesResponseType(typeof(string), 404)]
         public async Task<ActionResult<GameResultResponse>> GetResult(
             [FromRoute] RouteIdParameters routeParameters)
         {
