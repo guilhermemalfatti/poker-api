@@ -74,6 +74,5 @@ namespace FortisService.Core.Extensions
         {
             return cards.GroupBy(card => card.Rank).Any(group => group.Count() == 2);
         }
-
     }
 }

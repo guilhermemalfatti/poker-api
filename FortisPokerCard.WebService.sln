@@ -9,9 +9,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{F3725955-7
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FortisService.Core", "Libs\FortisService.Core\FortisService.Core.csproj", "{B3E1B795-035F-4D2F-9705-0E57441F0479}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FortisService.DataContext", "Libs\FortisService.DataContext\FortisService.DataContext.csproj", "{7A455D1A-A3E2-4AB3-AD48-DE252FA5655E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FortisService.DataContext", "Libs\FortisService.DataContext\FortisService.DataContext.csproj", "{7A455D1A-A3E2-4AB3-AD48-DE252FA5655E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FortisService.Models", "Libs\FortisService.Models\FortisService.Models.csproj", "{5A597FDE-2C40-408C-9E5C-28B80829A1DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FortisService.Models", "Libs\FortisService.Models\FortisService.Models.csproj", "{5A597FDE-2C40-408C-9E5C-28B80829A1DF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D403606A-5EA8-4870-921E-30090EFCEB3E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fortis.UnitTests", "Tests\Fortis.UnitTests\Fortis.UnitTests.csproj", "{0D9A6332-CE06-4FEA-ADCF-5060D9D0ACEB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +39,10 @@ Global
 		{5A597FDE-2C40-408C-9E5C-28B80829A1DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A597FDE-2C40-408C-9E5C-28B80829A1DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A597FDE-2C40-408C-9E5C-28B80829A1DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D9A6332-CE06-4FEA-ADCF-5060D9D0ACEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D9A6332-CE06-4FEA-ADCF-5060D9D0ACEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D9A6332-CE06-4FEA-ADCF-5060D9D0ACEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D9A6332-CE06-4FEA-ADCF-5060D9D0ACEB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -43,6 +51,7 @@ Global
 		{B3E1B795-035F-4D2F-9705-0E57441F0479} = {F3725955-722F-4EF5-BE66-7003865F9711}
 		{7A455D1A-A3E2-4AB3-AD48-DE252FA5655E} = {F3725955-722F-4EF5-BE66-7003865F9711}
 		{5A597FDE-2C40-408C-9E5C-28B80829A1DF} = {F3725955-722F-4EF5-BE66-7003865F9711}
+		{0D9A6332-CE06-4FEA-ADCF-5060D9D0ACEB} = {D403606A-5EA8-4870-921E-30090EFCEB3E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AE3EDAB0-4354-4D8B-8B70-0471A8414FCB}

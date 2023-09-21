@@ -6,7 +6,6 @@ using FortisService.Core.Payload.V1;
 using FortisService.Core.Services;
 using FortisService.DataContext;
 using FortisService.Models.Enumerator;
-using FortisService.Models.Models.Tables;
 using FortisService.Models.Payloads;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,8 +13,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
-using System.Reflection.Metadata;
 using System.Threading.Tasks;
 
 namespace FortisPokerCard.WebService.Controllers.V1
