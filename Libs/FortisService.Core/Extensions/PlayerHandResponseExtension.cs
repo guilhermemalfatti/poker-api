@@ -19,7 +19,7 @@ namespace FortisService.Core.Extensions
                     {
                         // todo test against the rank of is pairs if the triplet are the same
                         // the rule: Each full house is ranked first by the rank of its triplet, and then by the rank of its pair
-                        var group = playerResponse.CardList.GroupBy(c => c.Rank).OrderByDescending(c => c.Key).FirstOrDefault();
+                        var group = playerResponse.CardList.GroupBy(c => c.Rank).OrderByDescending(g => g.Count()).FirstOrDefault();
                         card = group.FirstOrDefault();
                         break;
                     }
@@ -36,7 +36,7 @@ namespace FortisService.Core.Extensions
                 case PokerHandType.TwoPair:
                 case PokerHandType.Pair:
                     {
-                        var group = playerResponse.CardList.GroupBy(c => c.Rank).OrderByDescending(g => g.Key).FirstOrDefault();
+                        var group = playerResponse.CardList.GroupBy(c => c.Rank).OrderByDescending(g => g.Count()).FirstOrDefault();
                         card = group.First();
                         break;
                     }
