@@ -16,3 +16,5 @@ The service API was created using Microsoft Entity FrameworkCore using net7.0.
 ### Api documentation
 
 The api documentation can be found through the url `http://localhost:5037` while running the service in development mode.
+
+![image](https://github.com/guilhermemalfatti/poker-api/assets/2362515/2c159495-e805-4417-b794-3c2c509031f0)
