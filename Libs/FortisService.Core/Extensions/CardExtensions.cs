@@ -32,14 +32,13 @@ namespace FortisService.Core.Extensions
         public static bool IsFullHouse(this IList<Card> cards)
         {
             var groups = cards.GroupBy(card => card.Rank).ToList();
-            return groups.Count == 2 && groups.Any(g => g.Count() == 3); // todo test it
+            return groups.Count == 2 && groups.Any(g => g.Count() == 3);
         }
 
         public static bool IsFlush(this IList<Card> cards)
         {
             var suit = cards.First().Suit;
-            return cards.All(c => c.Suit == suit); // todo test
-            //return cards.GroupBy(card => card.Suit).Any(group => group.Count() >= 5);
+            return cards.All(c => c.Suit == suit); 
         }
 
         public static bool IsStraight(this IList<Card> cards)

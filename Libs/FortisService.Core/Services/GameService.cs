@@ -203,7 +203,6 @@ namespace FortisService.Core.Services
                     }
                 }
 
-                // todo check if 2 players have the same rank
                 var candidateWinnerPlayers = groupCandidatesByHandTypeAndRank.SelectMany(g => g).OrderByDescending(p => p.HighCard.Rank);
                 candidateWinner = candidateWinnerPlayers.First();
                 if (candidateWinnerPlayers.Where(c => c.HighCard.Rank == candidateWinner.HighCard.Rank).Count() > 1)
@@ -311,9 +310,6 @@ namespace FortisService.Core.Services
 
         private PokerHandType GetHandType(IList<Card> cards)
         {
-            // todo do I need to sort
-            //.Sort((a, b) => b.Rank.CompareTo(a.Rank));
-
             if (cards.IsRoyalFlush())
                 return PokerHandType.RoyalFlush;
             else if (cards.IsStraightFlush())

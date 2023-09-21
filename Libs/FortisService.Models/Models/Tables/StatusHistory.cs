@@ -56,8 +56,6 @@ namespace FortisService.Models.Models.Tables
         [JsonIgnore]
         public Card FifthCard { get; set; }
 
-        /*public IList<Card> Hand { get; set; } // todo check how it will be mapped in the DB*/
-
         public DateTime CreatedAt { get; set; }
 
         public DateTime LastUpdatedAt { get; set; }

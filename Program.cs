@@ -72,7 +72,7 @@ namespace FortisPokerCard.WebService
                 }
                 else
                 {
-                    // todo
+                    // todo implement other flavors
                 }
             });
 
