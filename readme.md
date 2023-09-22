@@ -1,15 +1,13 @@
 # Poker-Api
 
-The API it's a basic implementation of hand evaluation process, poker hand has a plethora of possibilities and so it becomes a complex task to to evaluate all possibilities.
+The API represents a MVP implementation of the poker game, Evaluating poker hands involves dealing with a lot of possibilities, making it a challenging task to cover everything.
 
-The primary functions of the API include the creation of a new game through a POST request, card drawing via a GET request, and retrieving game results. All operational data is stored in a relational database, with SQLite chosen for simplicity.
+The core functions of the API are creating a new game through a POST request, conducting card draws via a GET request, and retrieving the game result. The data is stored in a relational database, with the choice of SQLite for its simplicity.
 
-A comprehensive documentation for all API endpoints is available within the Swagger documentation.
-
-The service API was created using Microsoft Entity FrameworkCore using net7.0.
+A documentation for all API endpoints can be found within the Swagger documentation. The service API has been developed using Microsoft Entity Framework Core within the .NET 7.0 framework.
 
 ### TODOs
-- Add unit tests
+- Add more unit tests coverage, cover all hands possibilities
 - Support auto API controller verisioning
 - For future DB improvements use EF Migrations feature
 
