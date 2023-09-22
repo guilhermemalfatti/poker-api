@@ -220,8 +220,6 @@ namespace FortisService.Core.Services
                 foreach (var player in group.ToList())
                 {
                     player.HighCardByHandType = player.GetGetHighestCardByHandType();
-                    //var highestPLayerCardByRank = player.CardList.GroupBy(c => c.Rank).OrderByDescending(g => g.Key).First().First();
-                    //player.HandTypeRank = highestPLayerCardByRank.Rank;
                 }
             }
 
@@ -262,15 +260,6 @@ namespace FortisService.Core.Services
             var playerStatusHistoriesForCurrentGame = await getPlayerStatusHisotryAsync(gameId, Status.Done, cancellationToken).ConfigureAwait(false);
 
             var playersHandResponse = getOrderedPlayersHand(playerStatusHistoriesForCurrentGame);
-
-            /*var playersHand = new List<PlayerHandResponse>();
-
-
-            foreach (var psh in playerStatusHistoriesForCurrentGame)
-            {
-                var playerCards = new List<Card> { psh.FirstCard, psh.SecondCard, psh.ThirdCard, psh.FourthCard, psh.FifthCard };
-                playersHand.Add(new PlayerHandResponse(psh.Player, playerCards, psh.Winner));
-            }*/
 
             return playersHandResponse;
         }
