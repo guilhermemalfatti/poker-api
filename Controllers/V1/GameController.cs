@@ -213,17 +213,17 @@ namespace FortisPokerCard.WebService.Controllers.V1
                 return NotFound(ex.Message);
             }
 
-            // todo remove comment
-            /*var isGameDone = _databaseContext.StatusHistories.Any(sh => sh.Status == Status.Done && sh.GameId == routeParameters.Id);
+            IList<PlayerHandResponse> playerstResponse;
+            var isGameDone = _databaseContext.StatusHistories.Any(sh => sh.Status == Status.Done && sh.GameId == routeParameters.Id);
             if (isGameDone)
             {
-                return Ok(await _gameService.GetResultAsync(routeParameters.Id, HttpContext.RequestAborted));
-            }*/
+                playerstResponse = await _gameService.GetResultAsync(routeParameters.Id, HttpContext.RequestAborted);
+                return new GameResultResponse(playerstResponse);
+            }
+            
+            playerstResponse = await _gameService.DetermineAndGetResultAsync(routeParameters.Id, HttpContext.RequestAborted);
 
-            var playerstResponse = await _gameService.DetermineAndGetResultAsync(routeParameters.Id, HttpContext.RequestAborted);
-
-            var result = new GameResultResponse(playerstResponse);
-            return Ok(result);
+            return Ok(new GameResultResponse(playerstResponse));
         }
     }
 }

@@ -68,5 +68,12 @@ namespace FortisService.Models.Payloads
             CardList = cards.OrderByDescending(c => c.Rank).ToList();
             HandType = handType;
         }
+        public PlayerHandResponse(Player player, IList<Card> cards, PokerHandType handType, bool winner)
+        {
+            Player = player;
+            CardList = cards.OrderByDescending(c => c.Rank).ToList();
+            HandType = handType;
+            IsWinner = winner;
+        }
     }
 }

@@ -112,8 +112,9 @@ namespace FortisService.Core.Services
             return playerHandsResponse;
         }
 
-        private async Task<IList<StatusHistory>> getInProgressPlayerStatusHisotryAsync(
+        private async Task<IList<StatusHistory>> getPlayerStatusHisotryAsync(
             int gameId,
+            Status status,
             CancellationToken cancellationToken = default)
         {
             return await _databaseContext.StatusHistories
@@ -123,7 +124,7 @@ namespace FortisService.Core.Services
                 .Include(sh => sh.ThirdCard)
                 .Include(sh => sh.FourthCard)
                 .Include(sh => sh.FifthCard)
-                .Where(sh => sh.GameId == gameId && sh.Status == Status.InProgress)
+                .Where(sh => sh.GameId == gameId && sh.Status == status)
                 .Select(sh => sh)
                 .ToListAsync(cancellationToken);
         }
@@ -132,7 +133,7 @@ namespace FortisService.Core.Services
             int gameId,
             CancellationToken cancellationToken = default)
         {
-            var playerStatusHistoriesForCurrentGame = await getInProgressPlayerStatusHisotryAsync(gameId, cancellationToken).ConfigureAwait(false);
+            var playerStatusHistoriesForCurrentGame = await getPlayerStatusHisotryAsync(gameId, Status.InProgress, cancellationToken).ConfigureAwait(false);
 
             var playersHandResponse = getOrderedPlayersHand(playerStatusHistoriesForCurrentGame);
 
@@ -258,18 +259,20 @@ namespace FortisService.Core.Services
             CancellationToken cancellationToken = default)
         {
 
-            var playerStatusHistoriesForCurrentGame = await getInProgressPlayerStatusHisotryAsync(gameId, cancellationToken).ConfigureAwait(false);
+            var playerStatusHistoriesForCurrentGame = await getPlayerStatusHisotryAsync(gameId, Status.Done, cancellationToken).ConfigureAwait(false);
 
-            var playersHand = new List<PlayerHandResponse>();
+            var playersHandResponse = getOrderedPlayersHand(playerStatusHistoriesForCurrentGame);
+
+            /*var playersHand = new List<PlayerHandResponse>();
 
 
             foreach (var psh in playerStatusHistoriesForCurrentGame)
             {
                 var playerCards = new List<Card> { psh.FirstCard, psh.SecondCard, psh.ThirdCard, psh.FourthCard, psh.FifthCard };
                 playersHand.Add(new PlayerHandResponse(psh.Player, playerCards, psh.Winner));
-            }
+            }*/
 
-            return playersHand.OrderBy(p => p.CardList).ToList();
+            return playersHandResponse;
         }
 
         private async Task terminateGameAsync(int gameId, IList<PlayerHandResponse> playerResponses, CancellationToken cancellationToken = default)
@@ -297,11 +300,11 @@ namespace FortisService.Core.Services
             var playersHand = new List<PlayerHandResponse>();
 
 
-            foreach (var psh in playerStatusHistoriesForCurrentGame)
+            foreach (var player in playerStatusHistoriesForCurrentGame)
             {
-                var playerCards = new List<Card> { psh.FirstCard, psh.SecondCard, psh.ThirdCard, psh.FourthCard, psh.FifthCard };
+                var playerCards = new List<Card> { player.FirstCard, player.SecondCard, player.ThirdCard, player.FourthCard, player.FifthCard };
                 var handType = GetHandType(playerCards);
-                playersHand.Add(new PlayerHandResponse(psh.Player, playerCards, handType));
+                playersHand.Add(new PlayerHandResponse(player.Player, playerCards, handType, player.Winner));
             }
 
             return playersHand.OrderByDescending(p => p.HandType).ToList();
